@@ -1,16 +1,18 @@
 import Head from "next/head";
+import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import { FileDrop } from "react-file-drop";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import useSWR from "swr";
 import axios, { post } from "axios";
 
 export default function Home() {
+	const [url, setURL] = useState(null);
+	const [visibility, setVisible] = useState(false);
+
 	const fetcher = (...args) => fetch(...args).then((r) => r.json());
 
-	const { data, error } = useSWR("/api/upload", fetcher);
-
-	if (error) console.log(error);
+	const { data } = useSWR("/api/upload", fetcher);
 
 	function fileUpload(files) {
 		const url = "http://localhost:3000/api/upload";
@@ -52,6 +54,8 @@ export default function Home() {
 				return "bg-yellow-300 h-2 w-2 rounded-xl m-2 mt-3";
 			} else if (data.status == 200) {
 				return "bg-green-300 h-2 w-2 rounded-xl m-2 mt-3";
+			} else if (error) {
+				return "bg-red-300 h-2 w-2 rounded-xl m-2 mt-3";
 			} else {
 				return "bg-red-300 h-2 w-2 rounded-xl m-2 mt-3";
 			}
@@ -60,6 +64,8 @@ export default function Home() {
 				return "loading";
 			} else if (data.status == 200) {
 				return "online";
+			} else if (error) {
+				return "offline";
 			} else {
 				return "offline";
 			}
@@ -106,9 +112,39 @@ export default function Home() {
 					className="upload duration-500 m-20 p-32 rounded-md border-4 border-dashed hover:border-solid border-gray-200 hover:shadow-2xl cursor-pointer"
 					onDrop={(files) => handleDrop(files)}
 				>
-					<span className="text-gray-600">Drag & Drop files.</span>
+					<span className="text-gray-600 select-none">Drag & Drop files.</span>
 				</FileDrop>
 			</motion.section>
+
+			<AnimatePresence initial={false}>
+				{visibility ? (
+					<motion.div
+						className="absolute bottom-8 left-8 text-xs rounded-lg border-2 border-green-300 p-2"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: 20 }}
+					>
+						Here's your link: {url}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							className="mb-0.5 ml-2 h-3 w-3 inline-flex text-red-500 cursor-pointer"
+							onClick={() => setVisible(false)}
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					</motion.div>
+				) : (
+					""
+				)}
+			</AnimatePresence>
 
 			<motion.footer
 				initial={{ opacity: 0, y: 20 }}
