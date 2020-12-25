@@ -9,21 +9,21 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className={styles.main}>
+			<section className="absolute top-8 left-8 flex flex-row justify-center items-center">
+				<div className="h-2 w-2 rounded-xl bg-green-300 m-2 mt-3" />
+				<span className="text-gray-500 cursor-default select-none">online</span>
+			</section>
+
+			<header className="duration-300 m-2">
 				<h1 className={styles.title}>Welcome.</h1>
+				<p className="text-gray-500 text-center">
+					Drop your files below to get started.
+				</p>
+			</header>
 
-				<div className={styles.grid}>
-					<a href="https://dont-ping.me/" className={styles.card}>
-						<h3>Website &rarr;</h3>
-						<p>Find your way back to the main website.</p>
-					</a>
-
-					<a href="https://github.com/punctuations/" className={styles.card}>
-						<h3>GitHub &rarr;</h3>
-						<p>Check out more of my projects over at my GitHub.</p>
-					</a>
-				</div>
-			</main>
+			<section className="duration-500 m-20 p-32 rounded-md border-4 border-dashed hover:border-solid border-gray-200 hover:shadow-2xl cursor-pointer">
+				<span className="text-gray-600">Drag & Drop files.</span>
+			</section>
 
 			<footer className={styles.footer}>
 				<a
