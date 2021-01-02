@@ -13,13 +13,16 @@ export default async (req, res) => {
 	form.uploadDir = "./public/uploads/";
 	form.keepExtensions = true;
 	form.parse(req, (err, fields, files) => {
-		files.file ? cdn.emit("toggle") : "";
+		let visibility = false;
+
+		cdn.emit("toggle", visibility);
+		files.file ? (visibility = true) : (visibility = false);
 		files.file
 			? cdn.emit(
 					"url",
 					`${
-						files.path
-							? `https://cdn.dont-ping.me/${files.file.path.slice(15)}`
+						files.file.path
+							? `https://localhost:3000/uploads/${files.file.path.slice(15)}`
 							: "404"
 					}`
 			  )

@@ -1,5 +1,7 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ToastProvider } from "react-toast-notifications";
+import Toast from "../components/toast";
 import styles from "../styles/Home.module.css";
 import { FileDrop } from "react-file-drop";
 import { AnimatePresence, motion } from "framer-motion";
@@ -9,19 +11,6 @@ const EventEmitter = require("events");
 export const cdn = new EventEmitter();
 
 export default function Home() {
-	const [url, setURL] = useState(null);
-	const [visibility, setVisible] = useState(false);
-
-	cdn.on("toggle", () => {
-		console.log("toggled");
-		console.log(setVisible(!visibility));
-	});
-	cdn.on("url", (url) => {
-		console.log(url);
-		console.log("URL-ed");
-		setURL(url);
-	});
-
 	const fetcher = (...args) => fetch(...args).then((r) => r.json());
 
 	const { data } = useSWR("/api/upload", fetcher);
@@ -84,6 +73,13 @@ export default function Home() {
 		}
 	}
 
+	function link() {
+		cdn.on("url", (url) => {
+			console.log("url set!");
+			return url;
+		});
+	}
+
 	return (
 		<div className={styles.container}>
 			<Head>
@@ -128,35 +124,19 @@ export default function Home() {
 				</FileDrop>
 			</motion.section>
 
-			<AnimatePresence initial={false}>
-				{visibility ? (
-					<motion.div
-						className="absolute bottom-8 left-8 text-xs rounded-lg border-2 border-green-300 p-2"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -20 }}
-					>
-						Here's your link: {url}
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							className="mb-0.5 ml-2 h-3 w-3 inline-flex text-red-500 cursor-pointer"
-							onClick={() => setVisible(false)}
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					</motion.div>
-				) : (
-					""
-				)}
-			</AnimatePresence>
+			{/* {useEffect(() => {
+				cdn.on("toggle", () => {
+					return (
+						<ToastProvider>
+							<Toast content="Success! Uploaded to {link}" />
+						</ToastProvider>
+					);
+				});
+			}, [])} */}
+
+			<ToastProvider>
+				<Toast content="Success! Uploaded to {link}" />
+			</ToastProvider>
 
 			<motion.footer
 				initial={{ opacity: 0, y: 20 }}
