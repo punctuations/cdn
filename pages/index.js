@@ -27,7 +27,7 @@ export default function Home() {
 	const { data } = useSWR("/api/upload", fetcher);
 
 	function fileUpload(files) {
-		const url = "http://localhost:3000/api/upload";
+		const url = "/api/upload";
 		const formData = new FormData();
 		formData.append("file", files);
 		const config = {
