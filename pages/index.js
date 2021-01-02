@@ -5,10 +5,22 @@ import { FileDrop } from "react-file-drop";
 import { AnimatePresence, motion } from "framer-motion";
 import useSWR from "swr";
 import axios, { post } from "axios";
+const EventEmitter = require("events");
+export const cdn = new EventEmitter();
 
 export default function Home() {
 	const [url, setURL] = useState(null);
 	const [visibility, setVisible] = useState(false);
+
+	cdn.on("toggle", () => {
+		console.log("toggled");
+		console.log(setVisible(!visibility));
+	});
+	cdn.on("url", (url) => {
+		console.log(url);
+		console.log("URL-ed");
+		setURL(url);
+	});
 
 	const fetcher = (...args) => fetch(...args).then((r) => r.json());
 
