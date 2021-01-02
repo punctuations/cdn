@@ -122,7 +122,7 @@ export default function Home() {
 						className="absolute bottom-8 left-8 text-xs rounded-lg border-2 border-green-300 p-2"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: 20 }}
+						exit={{ opacity: 0, y: -20 }}
 					>
 						Here's your link: {url}
 						<svg
