@@ -13,6 +13,7 @@ export default async (req, res) => {
 	form.uploadDir = "./public/uploads/";
 	form.keepExtensions = true;
 	form.parse(req, (err, fields, files) => {
+		files.file ? console.log(files.file.path.slice(15)) : "";
 		let visibility = false;
 
 		cdn.emit("toggle", visibility);
