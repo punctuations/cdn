@@ -7,13 +7,21 @@ import { FileDrop } from "react-file-drop";
 import { AnimatePresence, motion } from "framer-motion";
 import useSWR from "swr";
 import axios, { post } from "axios";
-const EventEmitter = require("events");
-export const cdn = new EventEmitter();
+
+// import formidable from "formidable";
+
+// export const form = new formidable.IncomingForm();
 
 export default function Home() {
 	const fetcher = (...args) => fetch(...args).then((r) => r.json());
 
 	const { data } = useSWR("/api/upload", fetcher);
+
+	const [link, setLink] = useState(102);
+
+	// form.on("data", ({ key }) => {
+	// 	setLink(key.file.path);
+	// });
 
 	function fileUpload(files) {
 		const url = "/api/upload";
@@ -73,13 +81,6 @@ export default function Home() {
 		}
 	}
 
-	function link() {
-		cdn.on("url", (url) => {
-			console.log("url set!");
-			return url;
-		});
-	}
-
 	return (
 		<div className={styles.container}>
 			<Head>
@@ -124,19 +125,15 @@ export default function Home() {
 				</FileDrop>
 			</motion.section>
 
-			{/* {useEffect(() => {
-				cdn.on("toggle", () => {
-					return (
-						<ToastProvider>
-							<Toast content="Success! Uploaded to {link}" />
-						</ToastProvider>
-					);
-				});
-			}, [])} */}
-
-			<ToastProvider>
-				<Toast content="Success! Uploaded to {link}" />
-			</ToastProvider>
+			{link != 102 ? (
+				<ToastProvider>
+					<Toast content={`Success! Uploaded to ${link}`} />
+				</ToastProvider>
+			) : (
+				<ToastProvider>
+					<Toast content={`Error: ${link}`} />
+				</ToastProvider>
+			)}
 
 			<motion.footer
 				initial={{ opacity: 0, y: 20 }}
