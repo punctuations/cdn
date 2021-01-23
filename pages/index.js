@@ -8,20 +8,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import useSWR from "swr";
 import axios, { post } from "axios";
 
-// import formidable from "formidable";
-
-// export const form = new formidable.IncomingForm();
-
 export default function Home() {
 	const fetcher = (...args) => fetch(...args).then((r) => r.json());
 
 	const { data } = useSWR("/api/upload", fetcher);
 
 	const [link, setLink] = useState(102);
-
-	// form.on("data", ({ key }) => {
-	// 	setLink(key.file.path);
-	// });
 
 	function fileUpload(files) {
 		const url = "/api/upload";
