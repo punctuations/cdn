@@ -13,7 +13,7 @@
     "formidable": "^1.2.2",
     "framer-motion": "^3.1.1",
     "next": "10.0.4",
-    "postcss": "^8.2.1",
+    "postcss": "^8.2.10",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-file-drop": "^3.1.2",
