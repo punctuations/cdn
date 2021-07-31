@@ -4,7 +4,6 @@ import styles from "../styles/Home.module.css";
 import {FileDrop} from "react-file-drop";
 import {Toaster, toast} from "react-hot-toast";
 import {motion} from "framer-motion";
-import useSWR from "swr";
 
 import * as crypto from "crypto";
 import {useRouter} from "next/router";
