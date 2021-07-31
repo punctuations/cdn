@@ -1,4 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
+import {convert} from "../../../../lib/convert";
 
 export default async function handler(
     req: NextApiRequest,
@@ -24,12 +25,13 @@ export default async function handler(
 
         res.setHeader(
             "Content-Type",
-            `application/json charset=utf-8`
+            `${response.includes('<svg') ? "image/svg+xml" : "image/png"}; charset=utf-8`
         )
 
         res.status(200);
         res.send(
-            {data: response}
+            response.includes('<svg') ? response :
+                await convert(`<img alt="" id="image" src="${response}">`)
         );
         return resolve("Created Image!");
     });

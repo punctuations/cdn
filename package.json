@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "@prisma/client": "2.28.0",
-    "@types/formidable": "^1.2.3",
     "axios": "^0.21.1",
-    "formidable": "^1.2.2",
+    "chrome-aws-lambda": "^10.1.0",
     "framer-motion": "^4.1.17",
     "next": "10.2.2",
+    "puppeteer-core": "^10.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-file-drop": "^3.1.2",

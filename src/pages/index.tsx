@@ -18,7 +18,7 @@ export default function Home() {
     function fileUpload(file: Blob) {
         const reader = new FileReader()
 
-        reader.readAsDataURL(file);
+        file.type !== 'image/svg+xml' ? reader.readAsDataURL(file) : reader.readAsText(file);
         reader.onloadend = () => {
             const loading = toast.loading('Uploading...')
             fetch(
@@ -67,11 +67,11 @@ export default function Home() {
 
             if (
                 (file_type === "image/png" ||
-                    file_type === "image/jpeg" ||
-                    file_type === "image/gif") && file_size <= 25000000
+                    file_type === "image/jpeg" || file_type === 'image/svg+xml') && file_size <= 25000000
             ) {
                 fileUpload(files[i]);
             } else {
+                console.log(files[i].type)
                 setUploadError(true)
                 setTimeout(() => {
                     setUploadError(false)
