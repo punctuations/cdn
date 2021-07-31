@@ -11,7 +11,7 @@ export default async function handler(
         const response = await fetch(
             process.env.NODE_ENV === "development"
                 ? "http://0.0.0.0:3000/api/read"
-                : "https://timerr.vercel.app/api/read",
+                : "https://cdn.dont-ping.me/api/read",
             {
                 method: "POST",
                 body: JSON.stringify({

@@ -24,7 +24,7 @@ export default function Home() {
             fetch(
                 process.env.NODE_ENV === "development"
                     ? "http://0.0.0.0:3000/api/upload" // REPLACE WITH YOUR URL
-                    : "https://timerr.vercel.app/api/upload",
+                    : "https://cdn.dont-ping.me/api/upload",
                 {
                     method: "POST",
                     body: JSON.stringify({
