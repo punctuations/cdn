@@ -7,19 +7,14 @@ import {motion} from "framer-motion";
 import useSWR from "swr";
 
 import * as crypto from "crypto";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 
 
 export default function Home() {
-    const fetcher = (args: RequestInfo) => fetch(args).then((r) => r.json());
-
-    const {data, error} = useSWR("/api/upload", fetcher);
-
     const router = useRouter();
 
     const [drag, setDrag] = React.useState<boolean>(false);
     const [uploadError, setUploadError] = React.useState<boolean>(false);
-    const [uuid, setUUID] = React.useState<string | null>(null)
 
     function fileUpload(file: Blob) {
         const reader = new FileReader()
@@ -43,9 +38,10 @@ export default function Home() {
                 }
             ).then(r => r.json()).then((body) => {
                 toast(
-                        <span>
+                    <span>
                             Image uploaded!
-                            <button className="ml-4 px-2 py-1 rounded border-black border" onClick={() => router.push(`/api/i/${body.uuid}`)}>View</button>
+                            <button className="ml-4 px-2 py-1 rounded border-black border"
+                                    onClick={() => router.push(`/api/i/${body.uuid}`)}>View</button>
                         </span>,
                     {
                         icon: '✅',
@@ -53,7 +49,6 @@ export default function Home() {
                         duration: 6000,
                     }
                 );
-                setUUID(body.uuid)
             }).catch((err) => {
                 console.log(err)
                 toast("Could not upload", {
@@ -86,36 +81,12 @@ export default function Home() {
         }
     }
 
-    function handleStatus() {
-        if (!data) {
-            return "bg-yellow-300 h-2 w-2 rounded-xl m-2 mt-3";
-        } else if (data) {
-            return "bg-green-300 h-2 w-2 rounded-xl m-2 mt-3";
-        } else if (error) {
-            return "bg-red-300 h-2 w-2 rounded-xl m-2 mt-3";
-        } else {
-            return "bg-red-300 h-2 w-2 rounded-xl m-2 mt-3";
-        }
-    }
-
     return (
         <div className={styles.container}>
             <Head>
                 <title>cdn - dont-ping.me</title>
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
-
-            <motion.section
-                initial={{opacity: 0, y: -20}}
-                animate={{opacity: 1, y: 0}}
-                transition={{duration: 0.3}}
-                className="absolute top-8 left-8 flex flex-row justify-center items-center"
-            >
-                <div className={handleStatus()}/>
-                <span className="text-gray-500 cursor-default select-none">
-                        {!data ? "loading" : error ? 'offline' : 'online'}
-				</span>
-            </motion.section>
 
             <motion.header
                 initial={{opacity: 0, y: -20}}
