@@ -1,11 +1,11 @@
 module.exports = {
-  purge: ["./src/**/*.{ts,tsx}"],
+  purge: ["./**/*.{ts,tsx}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
   },
   variants: {
-    extend: { borderStyle: ["hover"] },
+    extend: {},
   },
   plugins: [],
   mode: "jit",

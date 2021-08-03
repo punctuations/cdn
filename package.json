@@ -11,7 +11,7 @@
     "@supabase/supabase-js": "^1.7.6",
     "emoji-regex": "^9.2.2",
     "framer-motion": "^4.1.17",
-    "next": "10.0.9",
+    "next": "10.2.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-file-drop": "^3.1.2",
@@ -21,7 +21,7 @@
     "@types/node": "^15.6.0",
     "@types/react": "^17.0.6",
     "autoprefixer": "^10.2.5",
-    "postcss": "^8.2.10",
+    "postcss": "^8.3.0",
     "tailwindcss": "^2.1.2",
     "typescript": "^4.2.4"
   }
