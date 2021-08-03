@@ -86,12 +86,7 @@ export default function Home() {
 
         let file_size = files[i].size;
 
-        if (
-          (file_type === "image/png" ||
-            file_type === "image/jpeg" ||
-            file_type === "image/svg+xml") &&
-          file_size <= 20000000
-        ) {
+        if (file_size <= 20000000) {
           fileUpload(files[i], files[i].name);
         } else {
           console.log(files[i].type);

@@ -30,7 +30,7 @@ export default async function handler(
       if (error) {
         res.status(500);
         res.send({
-          data: `Error downloading image: ${error}`,
+          data: `Error downloading file: ${error}`,
         });
       } else {
         res.status(200);
@@ -39,8 +39,8 @@ export default async function handler(
       }
     } catch (error) {
       res.status(500);
-      res.send({ data: `Error downloading image: ${error.message}` });
+      res.send({ data: `Error downloading file: ${error.message}` });
     }
-    return resolve("Created Image!");
+    return resolve("Fin.");
   });
 }
