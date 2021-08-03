@@ -8,9 +8,12 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
 import { DEFAULT_AVATARS_BUCKET, emojis } from "../lib/constants";
+import { useClipboard } from "use-clipboard-copy";
 
 export default function Home() {
   const router = useRouter();
+
+  const clipboard = useClipboard();
 
   const [drag, setDrag] = React.useState<boolean>(false);
   const [uploadError, setUploadError] = React.useState<boolean>(false);
@@ -49,16 +52,24 @@ export default function Home() {
           <span>
             Image uploaded!
             <button
-              className="ml-4 px-2 py-1 rounded border-black border"
+              className="mx-4 px-2 py-1 rounded duration-300 border-gray-300 hover:border-black text-gray-500 hover:text-black border"
               onClick={() => router.push(`/api/${redirect}`)}
             >
               View
+            </button>
+            <button
+              className="px-2 py-1 rounded duration-300 border-blue-500 bg-blue-500 hover:bg-white text-white hover:text-blue-700 border"
+              onClick={() =>
+                clipboard.copy(`https://cdn.dont-ping.me/api/${redirect}`)
+              }
+            >
+              {clipboard.copied ? "Copied!" : "Copy"}
             </button>
           </span>,
           {
             icon: "✅",
             id: loading,
-            duration: 6000,
+            duration: 10000,
           }
         );
       }
