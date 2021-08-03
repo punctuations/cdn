@@ -86,7 +86,7 @@ export default function Home() {
 
         let file_size = files[i].size;
 
-        if (file_size <= 5000000) {
+        if (file_size <= 10000000) {
           fileUpload(files[i], files[i].name);
         } else {
           console.log(files[i].type);
