@@ -8,4 +8,5 @@ module.exports = {
     extend: { borderStyle: ["hover"] },
   },
   plugins: [],
+  mode: "jit",
 };
