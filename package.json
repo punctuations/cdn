@@ -1,6 +1,6 @@
 {
   "name": "cdn",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,23 +8,20 @@
     "start": "next start"
   },
   "dependencies": {
-    "@prisma/client": "2.28.0",
-    "axios": "^0.21.1",
-    "chrome-aws-lambda": "^10.1.0",
+    "@supabase/supabase-js": "^1.7.6",
+    "emoji-regex": "^9.2.2",
     "framer-motion": "^4.1.17",
-    "next": "10.2.2",
-    "puppeteer-core": "^10.1.0",
+    "next": "10.0.9",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-file-drop": "^3.1.2",
-    "react-hot-toast": "^2.0.0"
+    "react-hot-toast": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "^15.6.0",
     "@types/react": "^17.0.6",
     "autoprefixer": "^10.2.5",
     "postcss": "^8.3.0",
-    "prisma": "2.28.0",
     "tailwindcss": "^2.1.2",
     "typescript": "^4.2.4"
   }

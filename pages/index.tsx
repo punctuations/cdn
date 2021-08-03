@@ -5,8 +5,9 @@ import { FileDrop } from "react-file-drop";
 import { Toaster, toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 
-import * as crypto from "crypto";
 import { useRouter } from "next/router";
+import { supabase } from "../lib/supabaseClient";
+import { DEFAULT_AVATARS_BUCKET, emojis } from "../lib/constants";
 
 export default function Home() {
   const router = useRouter();
@@ -14,56 +15,56 @@ export default function Home() {
   const [drag, setDrag] = React.useState<boolean>(false);
   const [uploadError, setUploadError] = React.useState<boolean>(false);
 
-  function fileUpload(file: Blob) {
-    const reader = new FileReader();
-
-    file.type !== "image/svg+xml"
-      ? reader.readAsDataURL(file)
-      : reader.readAsText(file);
-    reader.onloadend = () => {
+  async function fileUpload(file: Blob, name: string) {
+    try {
       const loading = toast.loading("Uploading...");
-      fetch(
-        process.env.NODE_ENV === "development"
-          ? "http://0.0.0.0:3000/api/upload" // REPLACE WITH YOUR URL
-          : "https://cdn.dont-ping.me/api/upload",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            data: reader.result,
-            uuid: crypto.randomBytes(32).toString("hex"),
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((r) => r.json())
-        .then((body) => {
-          toast(
-            <span>
-              Image uploaded!
-              <button
-                className="ml-4 px-2 py-1 rounded border-black border"
-                onClick={() => router.push(`/api/i/${body.uuid}`)}
-              >
-                View
-              </button>
-            </span>,
-            {
-              icon: "✅",
-              id: loading,
-              duration: 6000,
-            }
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-          toast("Could not upload", {
-            icon: "❌",
-            id: loading,
-          });
+
+      let i,
+        result = [],
+        decode: string[] = [];
+      for (i = 0; i < 5; i++) {
+        result.push(
+          Object.keys(emojis)[(Object.keys(emojis).length * Math.random()) << 0]
+        );
+      }
+
+      result.forEach((k) => decode.push(emojis[k]));
+
+      // cannot store file as emojis
+      const filePath = `${[...decode]}.${name.split(".").pop()}`;
+      const redirect = `${result.join("")}.${name.split(".").pop()}`;
+
+      let { error: uploadError } = await supabase.storage
+        .from(DEFAULT_AVATARS_BUCKET)
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.log(uploadError);
+        toast("Could not upload", {
+          icon: "❌",
+          id: loading,
         });
-    };
+      } else {
+        toast(
+          <span>
+            Image uploaded!
+            <button
+              className="ml-4 px-2 py-1 rounded border-black border"
+              onClick={() => router.push(`/api/${redirect}`)}
+            >
+              View
+            </button>
+          </span>,
+          {
+            icon: "✅",
+            id: loading,
+            duration: 6000,
+          }
+        );
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 
   function handleDrop(files: FileList | null) {
@@ -78,9 +79,9 @@ export default function Home() {
           (file_type === "image/png" ||
             file_type === "image/jpeg" ||
             file_type === "image/svg+xml") &&
-          file_size <= 25000000
+          file_size <= 20000000
         ) {
-          fileUpload(files[i]);
+          fileUpload(files[i], files[i].name);
         } else {
           console.log(files[i].type);
           setUploadError(true);
