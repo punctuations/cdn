@@ -35,4 +35,5 @@ export const emojis: { [index: string]: string } = {
   "🦕": "dino",
   "🦖": "t_rex",
   "🐉": "dragon",
+  "🤡": "clown",
 };
