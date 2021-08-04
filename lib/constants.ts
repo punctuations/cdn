@@ -4,14 +4,6 @@ export const NEXT_PUBLIC_SUPABASE_ANON_KEY =
 
 export const DEFAULT_AVATARS_BUCKET = "avatars";
 
-export type Profile = {
-  id: string;
-  avatar_url: string;
-  username: string;
-  website: string;
-  updated_at: string;
-};
-
 export const emojis: { [index: string]: string } = {
   "😊": "smile",
   "🙃": "upside_down",
