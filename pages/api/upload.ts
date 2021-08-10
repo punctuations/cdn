@@ -44,19 +44,24 @@ export default async function handler(
 
         for (const k of keys) {
           let i,
-            result = [];
-
+            result = [],
+            decode: string[] = [];
           for (i = 0; i < 5; i++) {
             result.push(
-              emojis[
-                Object.keys(emojis)[
-                  (Object.keys(emojis).length * Math.random()) << 0
-                ]
+              Object.keys(emojis)[
+                (Object.keys(emojis).length * Math.random()) << 0
               ]
             );
           }
 
-          const filePath = `${[...result]}.${
+          result.forEach((k) => decode.push(emojis[k]));
+
+          const filePath = `${[...decode]}.${
+            Array.isArray(files)
+              ? files[0][k].name.split(".").pop()
+              : file[k].name.split(".").pop()
+          }`;
+          const redirect = `${result.join("")}.${
             Array.isArray(files)
               ? files[0][k].name.split(".").pop()
               : file[k].name.split(".").pop()
@@ -71,12 +76,10 @@ export default async function handler(
                 : Uint8Array.from(fs.readFileSync(file[k].path))
             );
           resolve("Uploaded!");
-          return res
-            .status(200)
-            .json({
-              success: true,
-              data: `https://cdn.dont-ping.me/api/${filePath}`,
-            });
+          return res.status(200).json({
+            success: true,
+            data: `https://cdn.dont-ping.me/api/${redirect}`,
+          });
         }
       });
     } else {
