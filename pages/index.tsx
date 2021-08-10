@@ -87,6 +87,13 @@ export default function Home() {
         let file_size = files[i].size;
 
         if (file_size <= 10000000) {
+          // const form = new FormData();
+          // form.append("test", files[i]);
+          //
+          // fetch("/api/upload", {
+          //   method: "POST",
+          //   body: form,
+          // });
           fileUpload(files[i], files[i].name);
         } else {
           console.log(files[i].type);

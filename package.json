@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.7.6",
+    "@types/formidable": "^1.2.3",
     "emoji-regex": "^9.2.2",
+    "formidable": "^1.2.2",
     "framer-motion": "^4.1.17",
     "next": "10.2.2",
     "react": "17.0.2",
