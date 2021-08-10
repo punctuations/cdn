@@ -18,7 +18,7 @@ export default async function handler(
     if (req.method === "POST") {
       const form = new formidable.IncomingForm({
         keepExtensions: true,
-        maxFileSize: 10000000,
+        maxFileSize: 5000000,
       });
 
       form.parse(req, async (err, fields, files) => {
