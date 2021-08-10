@@ -70,6 +70,13 @@ export default async function handler(
                 ? Uint8Array.from(fs.readFileSync(files[0][k].path))
                 : Uint8Array.from(fs.readFileSync(file[k].path))
             );
+          resolve("Uploaded!");
+          return res
+            .status(200)
+            .json({
+              success: true,
+              data: `https://cdn.dont-ping.me/api/${filePath}`,
+            });
         }
       });
     } else {
