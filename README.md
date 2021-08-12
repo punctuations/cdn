@@ -1,5 +1,5 @@
 # CDN
 
-public cdn i made :)
+public cdn and an endpoint i made (/api/upload) :)
 
 Sincerely, Matt
