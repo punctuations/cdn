@@ -4,6 +4,11 @@ import { supabase } from "../../lib/supabaseClient";
 import { DEFAULT_AVATARS_BUCKET, emojis } from "../../lib/constants";
 import * as fs from "fs";
 
+type Query = {
+  [p: string]: string | string[] | undefined;
+  emoji: string | undefined;
+};
+
 export const config = {
   api: {
     bodyParser: false,
@@ -16,6 +21,8 @@ export default async function handler(
 ) {
   await new Promise((resolve, reject) => {
     if (req.method === "POST") {
+      const query = req.query as Query;
+
       const form = new formidable.IncomingForm({
         keepExtensions: true,
         maxFileSize: 5000000,
@@ -43,18 +50,24 @@ export default async function handler(
         const file = files as any as formidable.Files & File;
 
         for (const k of keys) {
-          let i,
-            result = [],
+          let result: string[] = [],
             decode: string[] = [];
-          for (i = 0; i < 5; i++) {
-            result.push(
-              Object.keys(emojis)[
-                (Object.keys(emojis).length * Math.random()) << 0
-              ]
-            );
-          }
 
-          result.forEach((k) => decode.push(emojis[k]));
+          if (query.emoji?.toLowerCase() === "false" || !query.emoji) {
+            let i;
+            for (i = 0; i < 5; i++) {
+              result.push(
+                Object.keys(emojis)[
+                  (Object.keys(emojis).length * Math.random()) << 0
+                ]
+              );
+            }
+
+            result.forEach((k) => decode.push(emojis[k]));
+          } else {
+            result.push("&" + Math.random().toString(16).substr(2, 8));
+            result.forEach((k) => decode.push(k));
+          }
 
           const filePath = `${[...decode]}.${
             Array.isArray(files)

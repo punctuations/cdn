@@ -11,17 +11,20 @@ export default async function handler(
   return new Promise(async (resolve) => {
     const uuid = req.query.uuid as string;
 
-    const regex = emojiRegex();
-    let match;
-    let result = [];
-    while ((match = regex.exec(uuid))) {
-      const emoji = match[0];
-      result.push(emoji);
-    }
-
     let path: string[] = [];
+    if (uuid[0] === "&") {
+      path.push(uuid.split(".")[0]);
+    } else {
+      const regex = emojiRegex();
+      let match;
+      let result = [];
+      while ((match = regex.exec(uuid))) {
+        const emoji = match[0];
+        result.push(emoji);
+      }
 
-    result.forEach((k) => path.push(emojis[k]));
+      result.forEach((k) => path.push(emojis[k]));
+    }
 
     try {
       const { data, error } = await supabase.storage
