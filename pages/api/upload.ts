@@ -53,7 +53,7 @@ export default async function handler(
           let result: string[] = [],
             decode: string[] = [];
 
-          if (query.emoji?.toLowerCase() === "false" || !query.emoji) {
+          if (query.emoji?.toLowerCase() === "true" || !query.emoji) {
             let i;
             for (i = 0; i < 5; i++) {
               result.push(
