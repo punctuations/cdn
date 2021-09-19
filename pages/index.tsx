@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { supabase } from "../lib/supabaseClient";
 import { DEFAULT_AVATARS_BUCKET, emojis } from "../lib/constants";
 import { useClipboard } from "use-clipboard-copy";
+import { GitHub } from "react-feather";
 
 export default function Home() {
   const router = useRouter();
@@ -111,6 +112,13 @@ export default function Home() {
         <title>cdn - dont-ping.me</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <a
+        href="https://github.com/punctuations/cdn"
+        className="absolute top-3 left-3 transition duration-300 hover:opacity-60"
+      >
+        <GitHub />
+      </a>
 
       <motion.header
         initial={{ opacity: 0, y: -20 }}
