@@ -29,7 +29,7 @@ export default async function handler(
       });
 
       form.parse(req, async (err, fields, files) => {
-        if (err) return reject(err);
+        if (err) return res.status(500).json({ data: err });
 
         const keys: string[] = [];
 
@@ -96,7 +96,6 @@ export default async function handler(
         }
       });
     } else {
-      reject("Method not allowed");
       // Method is not POST, return 405 method not allowed
       return res
         .status(405)
