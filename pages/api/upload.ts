@@ -29,7 +29,7 @@ export default async function handler(
       });
 
       form.parse(req, async (err, fields, files) => {
-        if (err) return res.status(500).json({ data: err });
+        if (err) return res.status(400).json({ data: err });
 
         const keys: string[] = [];
 
@@ -88,7 +88,8 @@ export default async function handler(
                 ? Uint8Array.from(fs.readFileSync(files[0][k].path))
                 : Uint8Array.from(fs.readFileSync(file[k].path))
             );
-          resolve("Uploaded!");
+
+          if (uploadError) return res.status(500).json({ data: uploadError });
           return res.status(200).json({
             success: true,
             data: `https://cdn.dont-ping.me/api/${redirect}`,
