@@ -6,7 +6,8 @@ import * as fs from "fs";
 
 type Query = {
   [p: string]: string | string[] | undefined;
-  emoji: string | undefined;
+  emoji?: string;
+  fixed?: string;
 };
 
 export const config = {
@@ -44,7 +45,9 @@ export default async function handler(
           [index: string]: {
             size: number;
             path: string;
+            filepath: string;
             name: string;
+            originalFilename: string;
             type: string;
             mtime: string;
           };
@@ -56,23 +59,37 @@ export default async function handler(
           let result: string[] = [],
             decode: string[] = [];
 
-          if (query.emoji?.toLowerCase() === "true" || !query.emoji) {
-            let i;
-            for (i = 0; i < 5; i++) {
-              result.push(
-                Object.keys(emojis)[
-                  (Object.keys(emojis).length * Math.random()) << 0
-                ]
-              );
-            }
+          if (!query.fixed) {
+            if (query.emoji?.toLowerCase() === "true" || !query.emoji) {
+              let i;
+              for (i = 0; i < 5; i++) {
+                result.push(
+                  Object.keys(emojis)[
+                    (Object.keys(emojis).length * Math.random()) << 0
+                  ]
+                );
+              }
 
-            result.forEach((k) => decode.push(emojis[k]));
+              result.forEach((k) => decode.push(emojis[k]));
+            } else {
+              result.push("&" + Math.random().toString(16).substr(2, 8));
+              result.forEach((k) => decode.push(k));
+            }
           } else {
-            result.push("&" + Math.random().toString(16).substr(2, 8));
+            result.push(
+              "&" +
+                `${
+                  Array.isArray(files)
+                    ? files[0][k].name
+                      ? files[0][k].name.split(".")[0]
+                      : files[0][k].originalFilename.split(".")[0]
+                    : file[k].name
+                    ? file[k].name.split(".")[0]
+                    : file[k].originalFilename.split(".")[0]
+                }`
+            );
             result.forEach((k) => decode.push(k));
           }
-
-          console.log(file[k], file[k].originalFilename);
 
           const filePath = `${[...decode]}.${
             Array.isArray(files)
