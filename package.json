@@ -14,7 +14,7 @@
     "formidable": "^2.0.1",
     "formidable-serverless": "^1.1.1",
     "framer-motion": "^4.1.17",
-    "next": "10.2.2",
+    "next": "11.1.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-feather": "^2.0.9",
