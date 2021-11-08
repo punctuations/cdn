@@ -32,7 +32,7 @@ export default async function handler(
       form.parse(req, async (err, fields, files) => {
         if (err)
           return res
-            .status(200)
+            .status(400)
             .json({ data: `Error while parsing form: ${err}` });
 
         const keys: string[] = [];
