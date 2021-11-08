@@ -61,7 +61,7 @@ export default async function handler(
           let result: string[] = [],
             decode: string[] = [];
 
-          if (!query.fixed) {
+          if (query.fixed?.toLowerCase() === "false" || !query.fixed) {
             if (query.emoji?.toLowerCase() === "true" || !query.emoji) {
               let i;
               for (i = 0; i < 5; i++) {
