@@ -72,15 +72,27 @@ export default async function handler(
             result.forEach((k) => decode.push(k));
           }
 
+          console.log(file[k], file[k].originalFilename);
+
           const filePath = `${[...decode]}.${
             Array.isArray(files)
-              ? files[0][k].name.split(".").pop()
-              : file[k].name.split(".").pop()
+              ? files[0][k].name
+                ? files[0][k].name.split(".").pop()
+                : files[0][k].originalFilename.split(".").pop()
+              : file[k].name
+              ? file[k].name.split(".").pop()
+              : file[k].originalFilename.split(".").pop()
           }`;
+
+          console.log(filePath);
           const redirect = `${result.join("")}.${
             Array.isArray(files)
-              ? files[0][k].name.split(".").pop()
-              : file[k].name.split(".").pop()
+              ? files[0][k].name
+                ? files[0][k].name.split(".").pop()
+                : files[0][k].originalFilename.split(".").pop()
+              : file[k].name
+              ? file[k].name.split(".").pop()
+              : file[k].originalFilename.split(".").pop()
           }`;
 
           let { error: uploadError } = await supabase.storage
@@ -88,8 +100,12 @@ export default async function handler(
             .upload(
               filePath,
               Array.isArray(files)
-                ? Uint8Array.from(fs.readFileSync(files[0][k].path))
-                : Uint8Array.from(fs.readFileSync(file[k].path))
+                ? Uint8Array.from(
+                    fs.readFileSync(files[0][k].path ?? files[0][k].filepath)
+                  )
+                : Uint8Array.from(
+                    fs.readFileSync(file[k].path ?? file[k].filepath)
+                  )
             );
 
           if (uploadError) return res.status(500).json({ data: uploadError });
