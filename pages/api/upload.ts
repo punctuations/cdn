@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import formidable from "formidable";
+import { Fields, Files } from "formidable";
+// @ts-ignore
+import formidable from "formidable-serverless";
 import { supabase } from "../../lib/supabaseClient";
 import { DEFAULT_AVATARS_BUCKET, emojis } from "../../lib/constants";
 import * as fs from "fs";
@@ -29,7 +31,7 @@ export default async function handler(
         maxFileSize: 5000000,
       });
 
-      form.parse(req, async (err, fields, files) => {
+      form.parse(req, async (err: any, fields: Fields, files: Files) => {
         if (err)
           return res
             .status(400)
