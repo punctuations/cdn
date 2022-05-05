@@ -17,6 +17,7 @@ export default function Home() {
   const clipboard = useClipboard();
 
   const [drag, setDrag] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [uploadError, setUploadError] = React.useState<boolean>(false);
 
   async function fileUpload(file: Blob, name: string) {
@@ -43,12 +44,14 @@ export default function Home() {
         .upload(filePath, file);
 
       if (uploadError) {
+        setLoading(false);
         console.log(uploadError);
         toast("Could not upload", {
           icon: "❌",
           id: loading,
         });
       } else {
+        setLoading(false);
         toast(
           <span>
             Image uploaded!
@@ -81,29 +84,28 @@ export default function Home() {
 
   function handleDrop(files: FileList | null) {
     setDrag(false);
-    if (files)
+    if (!loading && files) {
+      setLoading(true);
+
+      let overall_package = 0;
+
       for (let i = 0; i < files.length; i++) {
-        let file_type = files[i].type;
-
-        let file_size = files[i].size;
-
-        if (file_size <= 10000000) {
-          // const form = new FormData();
-          // form.append("test", files[i]);
-          //
-          // fetch("/api/upload", {
-          //   method: "POST",
-          //   body: form,
-          // });
-          fileUpload(files[i], files[i].name);
-        } else {
-          console.log(files[i].type);
-          setUploadError(true);
-          setTimeout(() => {
-            setUploadError(false);
-          }, 5000);
-        }
+        overall_package += files[i].size;
       }
+
+      if (overall_package <= 10000000) {
+        for (let i = 0; i < files.length; i++) {
+          fileUpload(files[i], files[i].name);
+        }
+      } else {
+        setLoading(false);
+        console.log("overall package size too large.");
+        setUploadError(true);
+        setTimeout(() => {
+          setUploadError(false);
+        }, 5000);
+      }
+    }
   }
 
   return (
@@ -139,16 +141,22 @@ export default function Home() {
       >
         <FileDrop
           className={`transition-shadow duration-500 m-20 p-32 rounded-md border-4 ${
-            drag ? "border-solid" : "border-dashed"
+            loading ? "border-dotted" : drag ? "border-solid" : "border-dashed"
           } hover:border-solid ${
             uploadError ? "border-red-300" : "border-gray-200"
-          } hover:shadow-2xl cursor-pointer`}
+          } hover:shadow-2xl ${
+            loading ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
           onDragOver={() => setDrag(true)}
           onDragLeave={() => setDrag(false)}
           onDrop={(files) => handleDrop(files)}
           frame={process.browser ? document : undefined}
         >
-          <span className="text-gray-600 select-none">
+          <span
+            className={`${
+              loading ? "text-gray-400" : "text-gray-600"
+            } select-none`}
+          >
             Drag &amp; Drop files.
           </span>
         </FileDrop>
